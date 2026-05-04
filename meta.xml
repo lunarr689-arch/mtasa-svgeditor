@@ -1,0 +1,12 @@
+<meta>
+    <!-- INFO -->
+    <info author="bover." version="1.0.0" name="SVG Editor" description="SVG Editor" type="script" />
+
+    <!-- SCRIPTS -->
+    <script src="c_main.lua" type="client" cache="false" />
+    <script src="c_settings.lua" type="client" cache="false" />
+    <script src="c_viewbox.lua" type="client" cache="false" />
+
+    <!-- TEXTURES -->
+    <file src="files/textures/*.png" />
+</meta>
