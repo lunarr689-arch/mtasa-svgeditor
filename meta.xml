@@ -6,6 +6,7 @@
     <script src="c_main.lua" type="client" cache="false" />
     <script src="c_settings.lua" type="client" cache="false" />
     <script src="c_viewbox.lua" type="client" cache="false" />
+    <script src="c_toolbox.lua" type="client" cache="false" />
 
     <!-- TEXTURES -->
     <file src="files/textures/*.png" />

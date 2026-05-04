@@ -9,6 +9,7 @@
 function applyDefaultSettings()
     cache.settings = {
         viewboxColor = { 30, 30, 30 },
+        toolboxItemGap = 10/zoom,
     }
 end 
 
