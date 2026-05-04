@@ -27,6 +27,7 @@ This project is being made to show capabilities of MTA:SA and SVG within. Curren
 - [ ] Pen (Custom shapes)
 - [ ] Auto layout
 - [ ] Fonts importing
+- [ ] Hierarchy tree
 
 
 ## License
