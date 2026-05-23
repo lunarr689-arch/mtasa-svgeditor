@@ -36,7 +36,7 @@ function createToolboxBackground()
 
     local backgroundSVG = [[
         <svg width="%f" height="%f" fill="none">
-            <rect x="0.5" y="0.5" width="%f" height="%f" rx="10" fill="#282828" stroke="#505050"/>
+            <rect x="0.5" y="0.5" width="%f" height="%f" rx="8" fill="#282828" stroke="#505050"/>
         </svg>
     ]]
 
@@ -65,34 +65,21 @@ function renderToolbox()
         local iconWidth, iconHeight = dxGetMaterialSize(toolData.icon)
         currentX = currentX + itemGap
 
-        toolBoxColor = (cache.settings.selectedTool == toolKey) and tocolor(255, 255, 255, 255) or tocolor(190, 190, 190, 255)
+        local toolBoxColor = (cache.currentTool == toolKey) and tocolor(255, 255, 255, 255) or tocolor(190, 190, 190, 255)
         dxDrawImage(currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight, toolData.icon, 0, 0, 0, toolBoxColor)
 
-        currentX = currentX + iconWidth
-    end
-end 
-
-function getToolPosition(toolKey)
-    if (not cache.toolboxInitialized) then return false end
-    if (not cache.settings) then return false end
-    if (not cache.toolboxBackgroundTexture) then return false end 
-
-    local toolboxX, toolboxY, toolboxW, toolboxH = sx/2-(cache.toolboxWidth / 2), 10/zoom, cache.toolboxWidth, cache.toolboxHeight
-
-    local itemGap = cache.settings.toolboxItemGap
-    local currentX = toolboxX
-    for key, toolData in pairs(cache.tools) do
-        local iconWidth, iconHeight = dxGetMaterialSize(toolData.icon)
-        currentX = currentX + itemGap
-
-        if (key == toolKey) then
-            return currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight
+        if (click(currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight)) then
+            if (not cache.tools[cache.currentTool]) then return false end
+            if (cache.currentTool == toolKey) then return false end
+            
+            -- This needs a little rework, becouse when you click on the icon a rectangle appears :/.
+            cache.currentTool = toolKey
+            cache.dragStartPosition = nil
+            cache.dragEndPosition = nil
         end
 
         currentX = currentX + iconWidth
     end
-
-    return false
 end
 
 function initializeToolbox()
@@ -100,4 +87,5 @@ function initializeToolbox()
 
     createToolboxBackground()
     cache.toolboxInitialized = true 
+    cache.currentTool = 'cursor'
 end 
