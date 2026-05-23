@@ -36,7 +36,7 @@ function createToolboxBackground()
 
     local backgroundSVG = [[
         <svg width="%f" height="%f" fill="none">
-            <rect x="0.5" y="0.5" width="%f" height="%f" rx="16" fill="#282828" stroke="#505050"/>
+            <rect x="0.5" y="0.5" width="%f" height="%f" rx="10" fill="#282828" stroke="#505050"/>
         </svg>
     ]]
 
@@ -48,7 +48,7 @@ function createToolboxBackground()
     svgCreate(totalToolboxWidth, totalToolboxHeight, formattedSVG, function(texture)
         cache.toolboxBackgroundTexture = texture
     end)
-end 
+end
 
 function renderToolbox()
     if (not cache.toolboxInitialized) then initializeToolbox(); return false end
@@ -65,11 +65,35 @@ function renderToolbox()
         local iconWidth, iconHeight = dxGetMaterialSize(toolData.icon)
         currentX = currentX + itemGap
 
-        dxDrawImage(currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight, toolData.icon, 0, 0, 0, tocolor(230, 230, 230, 255))
+        toolBoxColor = (cache.settings.selectedTool == toolKey) and tocolor(255, 255, 255, 255) or tocolor(190, 190, 190, 255)
+        dxDrawImage(currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight, toolData.icon, 0, 0, 0, toolBoxColor)
 
         currentX = currentX + iconWidth
     end
 end 
+
+function getToolPosition(toolKey)
+    if (not cache.toolboxInitialized) then return false end
+    if (not cache.settings) then return false end
+    if (not cache.toolboxBackgroundTexture) then return false end 
+
+    local toolboxX, toolboxY, toolboxW, toolboxH = sx/2-(cache.toolboxWidth / 2), 10/zoom, cache.toolboxWidth, cache.toolboxHeight
+
+    local itemGap = cache.settings.toolboxItemGap
+    local currentX = toolboxX
+    for key, toolData in pairs(cache.tools) do
+        local iconWidth, iconHeight = dxGetMaterialSize(toolData.icon)
+        currentX = currentX + itemGap
+
+        if (key == toolKey) then
+            return currentX, toolboxY + (toolboxH / 2) - (iconHeight / 2), iconWidth, iconHeight
+        end
+
+        currentX = currentX + iconWidth
+    end
+
+    return false
+end
 
 function initializeToolbox()
     if (cache.toolboxInitialized) then return false end

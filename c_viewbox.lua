@@ -17,13 +17,34 @@ function renderViewbox()
     dxDrawText('https://github.com/boversoneg/mtasa-svgeditor | ', sx - urlTextWidth - 70/zoom, sy - 15/zoom, nil, nil, tocolor(255, 255, 255, 150), 1, 'default')
 
     renderToolbox()
-end 
+    renderRectangles()
+end
+
+function clickViewbox()
+    if (not cache.toolboxInitialized) then return initializeToolbox() end
+    if (not cache.settings) then return false end
+    if (not cache.toolboxBackgroundTexture) then return false end
+
+    for i, v in pairs(cache.tools) do
+        local toolX, toolY, toolW, toolH = getToolPosition(i)
+
+        if (IsMouseIn(toolX, toolY, toolW, toolH)) then
+            if (cache.settings.selectedTool == i) then
+                return true
+            end
+
+            cache.settings.selectedTool = i
+            return true
+        end
+    end
+end
 
 function createViewbox()
     toggleHUDComponents(false)
     applySettings()
 
     addEventHandler('onClientRender', root, renderViewbox)
+    addEventHandler('onClientClick', root, clickViewbox)
     showCursor(true)
 end 
 addEventHandler('onClientResourceStart', resourceRoot, createViewbox)
