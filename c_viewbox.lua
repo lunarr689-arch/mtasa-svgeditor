@@ -28,7 +28,7 @@ function renderViewbox()
     renderToolbox()
 
 
-    -- This is not PERFECT! Its a little buggy and still needs a little work, but overall its a good start.
+    -- This is not PERFECT! Its a little buggy and still needs a little work, but overall its a good start :/.
     if ((getKeyState('mouse1')) and (not cache.dragStartPosition)) then
         if (not draggableTools[cache.currentTool]) then return false end
         
