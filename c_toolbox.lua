@@ -36,7 +36,7 @@ function createToolboxBackground()
 
     local backgroundSVG = [[
         <svg width="%f" height="%f" fill="none">
-            <rect x="0.5" y="0.5" width="%f" height="%f" rx="8" fill="#282828" stroke="#505050"/>
+            <rect x="0.5" y="0.5" width="%f" height="%f" rx="16" fill="#282828" stroke="#505050"/>
         </svg>
     ]]
 
@@ -72,7 +72,6 @@ function renderToolbox()
             if (not cache.tools[cache.currentTool]) then return false end
             if (cache.currentTool == toolKey) then return false end
             
-            -- This needs a little rework, becouse when you click on the icon a rectangle appears :/.
             cache.currentTool = toolKey
             cache.dragStartPosition = nil
             cache.dragEndPosition = nil

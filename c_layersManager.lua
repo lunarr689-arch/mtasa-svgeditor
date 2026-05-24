@@ -2,7 +2,7 @@
 -- @ Description: This source code is open source.
 -- @ Zacznijmy wymagać więcej ~ Xyrusek
 
-cache.layers = {};
+cache.layers = {}
 
 function createLayer(layerType, x, y, w, h, data)
     assert(type(layerType) == 'string', "Bad argument @ 'createLayer' [expected string at argument 1, got "..type(layerType).."]")
@@ -15,19 +15,19 @@ function createLayer(layerType, x, y, w, h, data)
     assert(type(data) == 'table', "Bad argument @ 'createLayer' [expected table at argument 6, got "..type(data).."]")
 
     local id = findFreeLayerId()
-    cache.layers[id] = {type = layerType, x = x, y = y, w = w, h = h, data = data};
+    cache.layers[id] = {type = layerType, x = x, y = y, w = w, h = h, data = data}
     
     return id
 end
 
 function renderLayers()
-    for i, v in pairs(cache.layers) do
-        if (v.data and v.data.svg and isElement(v.data.svg)) then
-            dxDrawImage(v.x, v.y, v.w, v.h, v.data.svg)
+    for index, LayerData in pairs(cache.layers) do
+        if ((LayerData.data) and (LayerData.data['textureElement']) and (isElement(LayerData.data['textureElement']))) then
+            dxDrawImage(LayerData.x, LayerData.y, LayerData.w, LayerData.h, LayerData.data['textureElement'])
         end
     end
 end
--- Not perfect, but works okay?
+
 function renderPreviewLayer(type, x, y, w, h)
     if type == 'rectangle' then
         dxDrawRectangle(x, y, w, h, tocolor(255, 255, 255, 255))
@@ -59,5 +59,12 @@ end
 function destroyLayer(id)
     if (not cache.layers[id]) then return false end
 
+    for _, layerData in pairs(cache.layers[id].data or {}) do
+        if (isElement(layerData)) then
+            destroyElement(layerData)
+        end
+    end
+
     cache.layers[id] = nil
+    return true
 end
